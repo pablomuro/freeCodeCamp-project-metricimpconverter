@@ -36,7 +36,15 @@ function ConvertHandler() {
   const unitRegex = /((?:\d|\W)*)([a-zA-Z]*)/i
 
   function parse(str) {
-    return Function(`'use strict'; return (${str})`)()
+    let result;
+    try {
+      result = Function(`'use strict'; return (${str})`)()
+    } catch (error) {
+      result = null
+    }
+
+    return result
+
   }
 
   this.getNum = function (input) {
@@ -47,8 +55,11 @@ function ConvertHandler() {
 
   this.getUnit = function (input) {
     let result = unitRegex.exec(input);
-    result = result[2]
+    result = result[2].toUpperCase()
     result = result == 'L' ? result : result.toLowerCase()
+    if (!UNITS.metric.includes(result) && !UNITS.imperial.includes(result)) {
+      result = null
+    }
     return result;
   };
 
