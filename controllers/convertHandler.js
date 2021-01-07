@@ -37,6 +37,9 @@ function ConvertHandler() {
 
   function parse(str) {
     let result;
+
+    if (str.indexOf('/') !== str.lastIndexOf('/')) return null
+
     try {
       result = Function(`'use strict'; return (${str})`)()
     } catch (error) {
